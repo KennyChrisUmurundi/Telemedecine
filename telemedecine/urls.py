@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("utawala/", admin.site.urls),
-    path("auth/", include("telemedecine.apps.authentication.urls")),
+    path("", include("telemedecine.apps.authentication.urls")),
     path("administration/", include("telemedecine.apps.administration.urls")),
+    # path("auth/", include("django.contrib.auth.urls")),
 ]
