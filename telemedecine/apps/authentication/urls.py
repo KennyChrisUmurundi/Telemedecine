@@ -5,6 +5,7 @@ from .forms import UserPasswordResetForm
 
 urlpatterns = [
     path("", auth_views.login, name="login"),
+    path("auth/logout", auth_views.logout, name="logout"),
     path(
         "auth/password_reset",
         authy_views.PasswordResetView.as_view(form_class=UserPasswordResetForm),
@@ -19,6 +20,11 @@ urlpatterns = [
         "auth/password_reset_confirm/<uidb64>/<token>",
         authy_views.PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
+    ),
+    path(
+        "auth/password_reset_complete",
+        authy_views.PasswordResetCompleteView.as_view(),
+        name="password_reset_complete",
     )
     # path("admin_auth/", auth_views.admin_login, name="admin_login"),
 ]

@@ -13,12 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+
+# from django.conf.urls import handler400, handler403, handler404, handler500
 
 urlpatterns = [
     path("utawala/", admin.site.urls),
     path("", include("telemedecine.apps.authentication.urls")),
     path("administration/", include("telemedecine.apps.administration.urls")),
     # path("auth/", include("django.contrib.auth.urls")),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# handler404 = "telemedecine.apps.core.views.page_404_view"

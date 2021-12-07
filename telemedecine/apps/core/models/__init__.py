@@ -6,3 +6,5 @@ from telemedecine.apps.core.models.hospital_models import (
     Pharmacist,
     LabSpecialist,
 )
+
+from telemedecine.apps.core.models.administration import Role

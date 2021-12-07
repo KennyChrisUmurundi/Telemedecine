@@ -4,6 +4,7 @@ from django.contrib.auth import (
     logout as telemedecine_logout,
     authenticate as telemedecine_authenticate,
 )
+from django.contrib import messages
 
 # importing as such so that it doesn't create a confusion with our methods and django's default methods
 
@@ -21,9 +22,20 @@ def login(request):
             if user is not None:
                 if user.is_active:
                     telemedecine_login(request, user)
+                    messages.success(request, "Logged in successfully!")
                     return redirect(
-                        "/administration/dashboard"
+                        "administration:providers"
                     )  # user is redirected to dashboard
+            else:
+                messages.error(
+                    request, "Username or Password incorrect, Please try again"
+                )
+                form = AuthenticationForm()
+        else:
+            messages.error(
+                request, "Please enter a valid email and a valid password"
+            )
+            form = AuthenticationForm()
     else:
         form = AuthenticationForm()
 
@@ -36,56 +48,9 @@ def login(request):
     )
 
 
-# def admin_login(request):
-
-#     if request.method == "POST":
-#         form = AuthenticationForm(data=request.POST)
-#         if form.is_valid():
-#             email = request.POST["email"]
-#             password = request.POST["password"]
-#             user = telemedecine_authenticate(email=email, password=password)
-#             if user is not None:
-#                 if user.is_active:
-#                     telemedecine_login(request, user)
-#                     return redirect(
-#                         "administration:dashboard"
-#                     )  # user is redirected to dashboard
-#     else:
-#         form = AuthenticationForm()
-
-#     return render(
-#         request,
-#         "auth/login.html",
-#         {
-#             "form": form,
-#         },
-#     )
-
-
-def register(request):
-    if request.method == "POST":
-        form = RegistrationForm(data=request.POST)
-        if form.is_valid():
-            user = form.save()
-            u = telemedecine_authenticate(
-                user.email == user, user.password == password
-            )
-            telemedecine_login(request, u)
-            return redirect("/dashboard")
-    else:
-        form = RegistrationForm()
-
-    return render(
-        request,
-        "register.html",
-        {
-            "form": form,
-        },
-    )
-
-
 def logout(request):
     telemedecine_logout(request)
+    messages.success(request, "Logged out successfully, see you soon")
     return redirect("/")
 
 

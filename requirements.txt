@@ -1,5 +1,6 @@
 asgiref==3.4.1
 Django==3.2.9
+django-active-link==0.1.8
 django-countries==7.2.1
 psycopg2==2.9.2
 pytz==2021.3

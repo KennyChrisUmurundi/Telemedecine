@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from django.contrib.postgres.fields import JSONField
+from telemedecine.apps.authentication.models import CustomUser
 
 
 MALE = "M"
@@ -19,6 +20,9 @@ class Institution(models.Model):
     licence = models.FileField(
         upload_to="media/licenses", blank=True, null=True
     )
+    default_admin = models.ForeignKey(
+        CustomUser, on_delete=models.DO_NOTHING, null=True
+    )
 
     def __str__(self):
         return self.institution_name
@@ -34,6 +38,9 @@ class Speciality(models.Model):
 
 class Doctor(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     country = CountryField()
@@ -51,6 +58,9 @@ class Doctor(models.Model):
 
 class Nurse(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     country = CountryField()
@@ -66,6 +76,9 @@ class Nurse(models.Model):
 
 class Pharmacist(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     country = CountryField()
@@ -80,13 +93,28 @@ class Pharmacist(models.Model):
 
 class LabSpecialist(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     country = CountryField()
-    email = models.CharField(max_length=200)
+    email = models.CharField(max_length=200, null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     publication = models.JSONField(blank=True, null=True)
     licence_number = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.first_name + "" + self.last_name
+
+
+class Receptionist(models.Model):
+    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    country = CountryField()
+    email = models.CharField(max_length=200, null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
