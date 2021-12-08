@@ -21,7 +21,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -36,7 +35,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_countries",
+    "django_extensions",
     "active_link",
+    "crispy_forms",
     "telemedecine.apps.core",
     "telemedecine.apps.authentication",
 ]
@@ -167,6 +168,9 @@ MESSAGE_TAGS = {
     messages.WARNING: "alert-warning",
     messages.ERROR: "alert-danger",
 }
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
 
 try:
     from .local_settings import *

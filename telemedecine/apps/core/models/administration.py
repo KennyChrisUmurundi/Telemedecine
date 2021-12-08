@@ -11,6 +11,8 @@ class Role(models.Model):
     PHARMACIST = "P"
     NURSE = "N"
     RECEPTIONIST = "R"
+    PATIENT = "C"
+    DEFAULT = "Z"
 
     ROLES = (
         (ADMIN, _("Admin")),
@@ -18,11 +20,14 @@ class Role(models.Model):
         (PHARMACIST, _("Pharmacist")),
         (NURSE, _("Nurse")),
         (RECEPTIONIST, _("Receptionist")),
+        (PATIENT, _("Patient")),
     )
 
-    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.DO_NOTHING, related_name="user_role"
+    )
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
-    role = models.CharField(max_length=1, choices=ROLES)
+    role = models.CharField(max_length=1, choices=ROLES, default=DEFAULT)
 
     def __str__(self):
         return self.role

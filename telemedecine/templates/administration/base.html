@@ -48,7 +48,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Dashboard</div>
+                <div class="sidebar-brand-text mx-3">{{ request.user.user_role.institution.institution_name}} Dashboard</div>
             </a>
 
             <hr class="sidebar-divider my-0">
@@ -65,12 +65,56 @@
                     <i class="fas fa-fw fa-university"></i>
                     <span>Providers</span></a>
             </li>
+            <li class="nav-item {% active_link 'administration:users_list' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:users_list' %}" >
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Users</span></a>
+            </li>
             {% endif %}
+            {% if user.user_role.role == "A" %}
+             <div class="sidebar-heading">
+                Clinic Management
+            </div>
+            <li class="nav-item {% active_link 'administration:doctors' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:doctors' %}" >
+                    <i class="fas fa-fw fa-stethoscope"></i>
+                    <span>Doctors</span></a>
+            </li>
+            <li class="nav-item {% active_link 'administration:pharmacists' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:pharmacists' %}" >
+                    <i class="fas fa-fw fa-syringe"></i>
+                    <span>Pharmacists</span></a>
+            </li>
+            <!-- <li class="nav-item {% active_link 'administration:providers' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:providers' %}" >
+                    <i class="fas fa-fw fa-nurse"></i>
+                    <span>Nurses</span></a>
+            </li>
+            <li class="nav-item {% active_link 'administration:providers' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:providers' %}" >
+                    <i class="fas fa-fw fa-nurse"></i>
+                    <span>Lab Technician</span></a>
+            </li>
+
+            <li class="nav-item {% active_link 'administration:providers' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:providers' %}" >
+                    <i class="fas fa-fw fa-nurse"></i>
+                    <span>Appointments</span></a>
+            </li> -->
+            
 
             <!-- Heading -->
-           <!--  <div class="sidebar-heading">
+            <div class="sidebar-heading">
                 Staff
-            </div> -->
+            </div>
+
+            <!-- <li class="nav-item {% active_link 'administration:providers' 'active' %}">
+                <a class="nav-link" href="{% url 'administration:providers' %}" >
+                    <i class="fas fa-fw fa-nurse"></i>
+                    <span>Appointments</span></a>
+            </li> -->
+
+            {% endif %}
 
         </ul>
         <!-- End of Sidebar -->

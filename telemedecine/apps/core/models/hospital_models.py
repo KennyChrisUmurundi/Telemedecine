@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from django.contrib.postgres.fields import JSONField
 from telemedecine.apps.authentication.models import CustomUser
+from django.urls import reverse
 
 
 MALE = "M"
@@ -26,6 +27,9 @@ class Institution(models.Model):
 
     def __str__(self):
         return self.institution_name
+
+    def get_absolute_url(self):
+        return reverse("administration:providers")
 
 
 class Speciality(models.Model):

@@ -1,0 +1,36 @@
+{% extends 'administration/base.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+ <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Providers</h1>
+    <!-- <p class="mb-4">Bellow is a list of all Telemedecine Providers.</p> -->
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a type="button" data-toggle="modal" data-target="#editProvider" class="btn btn-success btn-icon-split mr-3">
+                <span class="icon text-white-50">
+                    <i class="fas fa-user-plus"></i>
+                </span>
+                <span class="text">Edit Provider</span>
+            </a>
+        </div>    
+		<div class="card shadow mb-4">
+                <!-- <h5 class="card-header">Add Category</h5> -->
+                <div class="card-body">
+                    <form method='POST' enctype="multipart/form-data">
+                      {% csrf_token %}
+                        <div class="form-group">
+                            {{form | crispy }}
+                        </div>
+                        <button class="btn btn-info btn-sm" type="submit">Update</button>
+                        <a href="{% url 'administration:providers' %}" class="btn btn-secondary btn-sm">back</a>
+                    </form>
+
+                </div>
+            </div>
+</div>
+</div>
+{% endblock %}

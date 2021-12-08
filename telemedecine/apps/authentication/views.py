@@ -20,7 +20,7 @@ def login(request):
             password = request.POST["password"]
             user = telemedecine_authenticate(email=email, password=password)
             if user is not None:
-                if user.is_active:
+                if user.is_active and user.is_staff:
                     telemedecine_login(request, user)
                     messages.success(request, "Logged in successfully!")
                     return redirect(
