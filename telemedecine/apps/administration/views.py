@@ -98,7 +98,6 @@ class Providers(View):
                         )
                     except BaseException:
                         pass
-
                 provider = Institution.objects.create(
                     institution_name=provider_name,
                     country=country,
@@ -110,6 +109,19 @@ class Providers(View):
                     provider.specialization = specialization
 
                 provider.save()
+                try:
+                    role = Role.objects.get(
+                        user=admin_user,
+                        institution=provider,
+                        role=Role.ADMIN,
+                    )
+                except Role.DoesNotExist:
+                    role = Role.objects.create(
+                        user=admin_user,
+                        institution=provider,
+                        role=Role.ADMIN,
+                    )
+                    role.save()
                 try:
                     send_mail(
                         "Telemedecine User Creation",
