@@ -54,11 +54,6 @@
             <hr class="sidebar-divider my-0">
 
             {% if user.is_staff %}
-            <!-- <li class="nav-item {% active_link 'administration:dashboard' 'active' %}">
-                <a class="nav-link" href="{% url 'administration:dashboard'%}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li> -->
             <!-- <hr class="sidebar-divider"> -->
             <li class="nav-item {% active_link 'administration:providers' 'active' %}">
                 <a class="nav-link" href="{% url 'administration:providers' %}" >
@@ -69,6 +64,11 @@
                 <a class="nav-link" href="{% url 'administration:users_list' %}" >
                     <i class="fas fa-fw fa-user"></i>
                     <span>Users</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="/utawala">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Telemedecine Admin</span></a>
             </li>
             {% endif %}
             {% if user.user_role.role == "A" %}

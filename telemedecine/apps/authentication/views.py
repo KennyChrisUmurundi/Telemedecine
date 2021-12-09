@@ -26,6 +26,12 @@ def login(request):
                     return redirect(
                         "administration:providers"
                     )  # user is redirected to dashboard
+                elif user.is_active and user.user_role.role == "A":
+                    telemedecine_login(request, user)
+                    messages.success(request, "Logged in successfully!")
+                    return redirect(
+                        "administration:doctors"
+                    )  # user is redirected to dashboard
             else:
                 messages.error(
                     request, "Username or Password incorrect, Please try again"
