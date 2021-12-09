@@ -84,17 +84,20 @@ class Providers(View):
                         admin_mail, temp_password
                     )
                     admin_user.save()
-                    send_mail(
-                        "Telemedecine User Creation",
-                        "Hi "
-                        + admin_user.email
-                        + " Your Generated Password is "
-                        + temp_password
-                        + " Please change it and create your own",
-                        " telemedecine@gmail.com",
-                        [admin_mail],
-                        fail_silently=False,
-                    )
+                    try:
+                        send_mail(
+                            "Telemedecine User Creation",
+                            "Hi "
+                            + admin_user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Please change it and create your own",
+                            " telemedecine@gmail.com",
+                            [admin_mail],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
 
                 provider = Institution.objects.create(
                     institution_name=provider_name,
@@ -107,19 +110,22 @@ class Providers(View):
                     provider.specialization = specialization
 
                 provider.save()
-                send_mail(
-                    "Telemedecine User Creation",
-                    "Hi "
-                    + admin_user.email
-                    + " Welcome to Telemedecine, please use your credentials to log into the system ",
-                    " telemedecine@gmail.com",
-                    [admin_mail],
-                    fail_silently=False,
-                )
-                messages.success(
-                    request,
-                    "Institution created successfully!",
-                )
+                try:
+                    send_mail(
+                        "Telemedecine User Creation",
+                        "Hi "
+                        + admin_user.email
+                        + " Welcome to Telemedecine, please use your credentials to log into the system ",
+                        " telemedecine@gmail.com",
+                        [admin_mail],
+                        fail_silently=False,
+                    )
+                    messages.success(
+                        request,
+                        "Institution created successfully!",
+                    )
+                except BaseException:
+                    pass
 
             else:
                 messages.error(
@@ -211,17 +217,20 @@ class DoctorView(View):
                     temp_password = uuid.uuid4().hex[:6].upper()
                     user = CustomUser.objects.create_user(email, temp_password)
                     user.save()
-                    send_mail(
-                        "Telemedecine User Creation",
-                        "Hi "
-                        + user.email
-                        + " Your Generated Password is "
-                        + temp_password
-                        + " Please change it and create your own",
-                        " telemedecine@gmail.com",
-                        [email],
-                        fail_silently=False,
-                    )
+                    try:
+                        send_mail(
+                            "Telemedecine User Creation",
+                            "Hi "
+                            + user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Please change it and create your own",
+                            " telemedecine@gmail.com",
+                            [email],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
                 try:
                     role = Role.objects.get(
                         user=user, institution=institution, role=Role.DOCTOR
@@ -245,19 +254,22 @@ class DoctorView(View):
                 elif licence_number:
                     doctor.licence_number = licence_number
                 doctor.save()
-                send_mail(
-                    "Telemedecine User Creation",
-                    "Hi "
-                    + user.email
-                    + " Welcome to Telemedecine, please use your credentials to log into the system ",
-                    " telemedecine@gmail.com",
-                    [email],
-                    fail_silently=False,
-                )
-                messages.success(
-                    request,
-                    "Doctor created successfully!",
-                )
+                try:
+                    send_mail(
+                        "Telemedecine User Creation",
+                        "Hi "
+                        + user.email
+                        + " Welcome to Telemedecine, please use your credentials to log into the system ",
+                        " telemedecine@gmail.com",
+                        [email],
+                        fail_silently=False,
+                    )
+                    messages.success(
+                        request,
+                        "Doctor created successfully!",
+                    )
+                except BaseException:
+                    pass
             else:
                 messages.error(
                     request, "Doctor not created, Please check each field!"
@@ -327,17 +339,20 @@ class PharmacistView(View):
                     temp_password = uuid.uuid4().hex[:6].upper()
                     user = CustomUser.objects.create_user(email, temp_password)
                     user.save()
-                    send_mail(
-                        "Telemedecine User Creation",
-                        "Hi "
-                        + user.email
-                        + " Your Generated Password is "
-                        + temp_password
-                        + " Please change it and create your own",
-                        " telemedecine@gmail.com",
-                        [email],
-                        fail_silently=False,
-                    )
+                    try:
+                        send_mail(
+                            "Telemedecine User Creation",
+                            "Hi "
+                            + user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Please change it and create your own",
+                            " telemedecine@gmail.com",
+                            [email],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
                 try:
                     role = Role.objects.get(
                         user=user, institution=institution, role=Role.PHARMACIST
@@ -361,19 +376,22 @@ class PharmacistView(View):
                 elif licence_number:
                     pharmacist.licence_number = licence_number
                 pharmacist.save()
-                send_mail(
-                    "Telemedecine User Creation",
-                    "Hi "
-                    + user.email
-                    + " Welcome to Telemedecine, please use your credentials to log into the system ",
-                    " telemedecine@gmail.com",
-                    [email],
-                    fail_silently=False,
-                )
-                messages.success(
-                    request,
-                    "Pharmacist created successfully!",
-                )
+                try:
+                    send_mail(
+                        "Telemedecine User Creation",
+                        "Hi "
+                        + user.email
+                        + " Welcome to Telemedecine, please use your credentials to log into the system ",
+                        " telemedecine@gmail.com",
+                        [email],
+                        fail_silently=False,
+                    )
+                    messages.success(
+                        request,
+                        "Pharmacist created successfully!",
+                    )
+                except BaseException:
+                    pass
             else:
                 messages.error(
                     request, "Pharmacist not created, Please check each field!"
