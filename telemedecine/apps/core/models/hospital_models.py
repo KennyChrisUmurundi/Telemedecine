@@ -24,6 +24,7 @@ class Institution(models.Model):
     default_admin = models.ForeignKey(
         CustomUser, on_delete=models.DO_NOTHING, null=True
     )
+    is_active = models.BooleanField(default=True, null=True)
 
     def __str__(self):
         return self.institution_name

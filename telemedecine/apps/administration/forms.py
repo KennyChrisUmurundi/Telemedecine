@@ -196,17 +196,17 @@ class AddPharmacistForm(forms.Form):
             }
         ),
     )
-    publication = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "type": "text",
-                "name": "publications",
-            }
-        ),
-        label="Last Name",
-        required=False,
-    )
+    # publication = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "class": "form-control",
+    #             "type": "text",
+    #             "name": "publications",
+    #         }
+    #     ),
+    #     label="Last Name",
+    #     required=False,
+    # )
     licence_number = forms.CharField(
         widget=forms.TextInput(
             attrs={

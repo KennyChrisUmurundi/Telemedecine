@@ -36,10 +36,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_countries",
     "django_extensions",
+    "rest_framework",
     "active_link",
     "crispy_forms",
     "telemedecine.apps.core",
     "telemedecine.apps.authentication",
+    "telemedecine.apps.api",
 ]
 
 MIDDLEWARE = [

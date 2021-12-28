@@ -19,6 +19,7 @@ def login(request):
             email = request.POST["email"]
             password = request.POST["password"]
             user = telemedecine_authenticate(email=email, password=password)
+            print(user)
             if user is not None:
                 if user.is_active and user.is_staff:
                     telemedecine_login(request, user)

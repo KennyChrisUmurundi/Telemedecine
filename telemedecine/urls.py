@@ -25,6 +25,7 @@ urlpatterns = [
     path("utawala/", admin.site.urls),
     path("", include("telemedecine.apps.authentication.urls")),
     path("administration/", include("telemedecine.apps.administration.urls")),
+    path("api/", include("telemedecine.apps.api.urls")),
     # path("auth/", include("django.contrib.auth.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
