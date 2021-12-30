@@ -41,4 +41,43 @@ urlpatterns = [
         admin_views.delete_pharmacist,
         name="delete_pharmacist",
     ),
+    ######## LABORATORY
+    path(
+        "lab_specialist/",
+        admin_views.LaboratoryView.as_view(),
+        name="lab",
+    ),
+    path(
+        "lab_specialist/delete/<int:id>/",
+        admin_views.delete_laboratorist,
+        name="delete_laboratorist",
+    ),
+    ######## USERS
+    path(
+        "system_users/",
+        admin_views.SystemUser.as_view(),
+        name="system_users",
+    ),
+    ######## RECEPTIONIST
+    path(
+        "receptionist/",
+        admin_views.ReceptionistView.as_view(),
+        name="receptionist",
+    ),
+    path(
+        "receptionist/delete/<int:id>/",
+        admin_views.delete_laboratorist,
+        name="receptionist_delete",
+    ),
+    ######## NURSE
+    path(
+        "nurse/",
+        admin_views.NurseView.as_view(),
+        name="nurse",
+    ),
+    path(
+        "nurse/delete/<int:id>/",
+        admin_views.delete_nurse,
+        name="delete_nurse",
+    ),
 ]

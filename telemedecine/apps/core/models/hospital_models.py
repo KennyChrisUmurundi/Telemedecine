@@ -71,8 +71,8 @@ class Nurse(models.Model):
     country = CountryField()
     email = models.CharField(max_length=200, blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    publication = models.JSONField(blank=True, null=True)
-    licence_number = models.CharField(max_length=200, blank=True, null=True)
+    # publication = models.JSONField(blank=True, null=True)
+    # licence_number = models.CharField(max_length=200, blank=True, null=True)
     is_practitioner = models.BooleanField(default=False)
 
     def __str__(self):
@@ -89,7 +89,7 @@ class Pharmacist(models.Model):
     country = CountryField()
     email = models.CharField(max_length=200, blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    publication = models.JSONField(blank=True, null=True)
+    # publication = models.JSONField(blank=True, null=True)
     licence_number = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
@@ -99,14 +99,18 @@ class Pharmacist(models.Model):
 class LabSpecialist(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(
-        CustomUser, on_delete=models.DO_NOTHING, blank=True, null=True
+        CustomUser,
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True,
+        related_name="sys_user",
     )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     country = CountryField()
     email = models.CharField(max_length=200, null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    publication = models.JSONField(blank=True, null=True)
+    # publication = models.JSONField(blank=True, null=True)
     licence_number = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):

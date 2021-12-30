@@ -181,7 +181,7 @@ class AddPharmacistForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "Enter doctor's email",
+                "placeholder": "Enter pharmacist's email",
                 "type": "email",
                 "name": "email",
             }
@@ -218,3 +218,164 @@ class AddPharmacistForm(forms.Form):
         label="licence_number",
         required=False,
     )
+
+
+class AddLabForm(forms.Form):
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "first_name",
+            }
+        ),
+        label="First Name",
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "last_name",
+            }
+        ),
+        label="Last Name",
+    )
+    country = CountryField().formfield(
+        widget=CountrySelectWidget(attrs={"class": "form-control"})
+    )
+    email = forms.EmailField(
+        label="",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter email",
+                "type": "email",
+                "name": "email",
+            }
+        ),
+    )
+    gender = forms.ChoiceField(
+        choices=GENDER,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Type",
+            }
+        ),
+    )
+    # publication = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "class": "form-control",
+    #             "type": "text",
+    #             "name": "publications",
+    #         }
+    #     ),
+    #     label="Last Name",
+    #     required=False,
+    # )
+    licence_number = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "licence_number",
+            }
+        ),
+        label="licence_number",
+        required=False,
+    )
+
+
+class AddReceptionistForm(forms.Form):
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "first_name",
+            }
+        ),
+        label="First Name",
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "last_name",
+            }
+        ),
+        label="Last Name",
+    )
+    country = CountryField().formfield(
+        widget=CountrySelectWidget(attrs={"class": "form-control"})
+    )
+    email = forms.EmailField(
+        label="",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter receptionist's email",
+                "type": "email",
+                "name": "email",
+            }
+        ),
+    )
+    gender = forms.ChoiceField(
+        choices=GENDER,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Type",
+            }
+        ),
+    )
+
+
+class AddNurseForm(forms.Form):
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "first_name",
+            }
+        ),
+        label="First Name",
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "last_name",
+            }
+        ),
+        label="Last Name",
+    )
+    country = CountryField().formfield(
+        widget=CountrySelectWidget(attrs={"class": "form-control"})
+    )
+    email = forms.EmailField(
+        label="",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter receptionist's email",
+                "type": "email",
+                "name": "email",
+            }
+        ),
+    )
+    gender = forms.ChoiceField(
+        choices=GENDER,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Type",
+            }
+        ),
+    )
+    is_practitioner = forms.BooleanField()

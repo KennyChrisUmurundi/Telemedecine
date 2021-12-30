@@ -12,6 +12,7 @@ class Role(models.Model):
     NURSE = "N"
     RECEPTIONIST = "R"
     PATIENT = "C"
+    LAB_SPECIALIST = "L"
     DEFAULT = "Z"
 
     ROLES = (
@@ -21,6 +22,7 @@ class Role(models.Model):
         (NURSE, _("Nurse")),
         (RECEPTIONIST, _("Receptionist")),
         (PATIENT, _("Patient")),
+        (LAB_SPECIALIST, _("Lab Specialist")),
     )
 
     user = models.OneToOneField(

@@ -72,11 +72,14 @@
                                     <thead>
                                         <tr>
                                             <th>User email</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
                                             <th>Role</th>
                                             <th>Country</th>
+                                            <th>State</th>
                                             <th>City</th>
                                             <th>Active</th>
-                                            <th>Institution</th>
+                                            <!-- <th>Institution</th> -->
                                             <!-- <th>City</th>
                                             <th>Specialization</th>
                                             <th>Default Admin</th> -->
@@ -97,31 +100,40 @@
                                     <tbody>
                                     	{% for user in users %}
                                         <tr>
-                                            <td>{{user.email}}</td>
-                                                {% if user.is_staff %}
+                                            <td>{{user.user.email}}</td>
+                                            <td>{{user.user.first_name}}</td>
+                                            <td>{{user.user.last_name}}</td>
+                                                {% if user.user.is_staff %}
                                                     <td><span class="badge badge-primary">Super Admin</span></td>
-                                                {% elif user.user_role.role == 'D' and not user.is_staff %}
-                                                    <td><span class="badge badge-info">Doctor</span></td>
-                                                {% elif user.user_role.role == 'P' and not user.is_staff %}
+                                                {% elif user.role == 'D' and not user.user.is_staff %}
+                                                    <td><span class="badge badge-success">Doctor</span></td>
+                                                {% elif user.role == 'P' and not user.user.is_staff %}
                                                     <td><span class="badge badge-info">Pharmacist</span></td>
-                                                {% elif user.user_role.role == 'A' and not user.is_staff %}
+                                                {% elif user.role == 'A' and not user.user.is_staff %}
                                                     <td><span class="badge badge-info">Admin</span></td>
+                                                {% elif user.role == 'L' and not user.user.is_staff %}
+                                                    <td><span class="badge badge-info">Lab Specialist</span></td>
+                                                {% elif user.role == 'R' and not user.user.is_staff %}
+                                                    <td><span class="badge badge-info">Receptionist</span></td>
+                                                {% elif user.role == 'N' and not user.user.is_staff %}
+                                                    <td><span class="badge badge-info">Nurse</span></td>
                                                 {% else %}
                                                 <td><span class="badge badge-secondary">None</span></td>
                                                 {% endif %}
-                                            <td>{{ user.user_role.institution.country}} <img src={{user.user_role.institution.country.flag}}/></td>
-                                            <td>{{ user.user_role.institution.city}}</td>
-                                            {% if user.is_active %}
+                                            <td>{{ user.institution.country}} <img src={{user.institution.country.flag}}/></td>
+                                            <td>{{ user.institution.state}}</td>
+                                            <td>{{ user.institution.city}}</td>
+                                            {% if user.user.is_active %}
                                             <td><span class="badge badge-success">True</span></td>
                                             {% else %}
                                             <td><span class="badge badge-danger">False</span></td>
                                             {% endif %}
 
-                                            {% if user.user_role.institution %}
+                                            <!-- {% if user.user_role.institution %}
                                                 <td>{{user.user_role.institution}}</td>
                                                 {% else %}
                                                 <td><span class="badge badge-warning">User not connected to an institution</span></td>
-                                            {% endif %}
+                                            {% endif %} -->
 
                                             <!-- <td>{{provider.city}}</td>
                                             <td>{{provider.specialization}}</td>

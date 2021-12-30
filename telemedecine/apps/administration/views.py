@@ -9,6 +9,9 @@ from .forms import (
     UpdateProviderForm,
     AddDoctorForm,
     AddPharmacistForm,
+    AddLabForm,
+    AddReceptionistForm,
+    AddNurseForm,
 )
 from telemedecine.apps.authentication.models import (
     CustomUser,
@@ -225,9 +228,14 @@ class DoctorView(View):
 
                 try:
                     user = CustomUser.objects.get(email=email)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
                 except CustomUser.DoesNotExist:
                     temp_password = uuid.uuid4().hex[:6].upper()
                     user = CustomUser.objects.create_user(email, temp_password)
+                    user.first_name = first_name
+                    user.last_name = last_name
                     user.save()
                     try:
                         send_mail(
@@ -243,6 +251,20 @@ class DoctorView(View):
                         )
                     except BaseException:
                         pass
+
+                try:
+                    existing_role = Role.objects.get(user=user)
+                    messages.error(
+                        request,
+                        "The Email entered already has a role in the system, Kindly check the system users page.",
+                    )
+                    form = AddDoctorForm()
+                    return redirect(
+                        "administration:doctors",
+                    )
+                except Role.DoesNotExist:
+                    pass
+
                 try:
                     role = Role.objects.get(
                         user=user, institution=institution, role=Role.DOCTOR
@@ -342,14 +364,19 @@ class PharmacistView(View):
                 country = request.POST["country"]
                 email = request.POST["email"]
                 gender = request.POST["gender"]
-                publication = request.POST["publication"]
+                # publication = request.POST["publication"]
                 licence_number = request.POST["licence_number"]
 
                 try:
                     user = CustomUser.objects.get(email=email)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
                 except CustomUser.DoesNotExist:
                     temp_password = uuid.uuid4().hex[:6].upper()
                     user = CustomUser.objects.create_user(email, temp_password)
+                    user.first_name = first_name
+                    user.last_name = last_name
                     user.save()
                     try:
                         send_mail(
@@ -365,6 +392,20 @@ class PharmacistView(View):
                         )
                     except BaseException:
                         pass
+
+                try:
+                    existing_role = Role.objects.get(user=user)
+                    messages.error(
+                        request,
+                        "The Email entered already has a role in the system, Kindly check the system users page.",
+                    )
+                    form = AddPharmacistForm()
+                    return redirect(
+                        "administration:pharmacists",
+                    )
+                except Role.DoesNotExist:
+                    pass
+
                 try:
                     role = Role.objects.get(
                         user=user, institution=institution, role=Role.PHARMACIST
@@ -383,9 +424,9 @@ class PharmacistView(View):
                     email=email,
                     gender=gender,
                 )
-                if publication:
-                    pharmacist.publication = publication
-                elif licence_number:
+                # if publication:
+                #     pharmacist.publication = publication
+                if licence_number:
                     pharmacist.licence_number = licence_number
                 pharmacist.save()
                 try:
@@ -428,11 +469,449 @@ def delete_pharmacist(request, id):
         pharmacist.delete()
         messages.success(
             request,
-            "Doctor deleted successfully",
+            "Pharmacist deleted successfully",
         )
     else:
         messages.error(
             request,
-            "Couldn't delete doctor",
+            "Couldn't delete Pharmacist",
         )
     return redirect("administration:pharmacists")
+
+
+class LaboratoryView(View):
+    def get(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        # print(institution)
+        logging.debug("INSTITUTION :%s" % institution)
+        lab_specialist = LabSpecialist.objects.filter(institution=institution)
+        form = AddLabForm()
+        context = {"objects": lab_specialist, "form": form}
+        return render(request, "administration/lab.html", context=context)
+
+    def post(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        if request.method == "POST":
+            form = AddLabForm(data=request.POST)
+            if form.is_valid():
+                first_name = request.POST["first_name"]
+                last_name = request.POST["last_name"]
+                country = request.POST["country"]
+                email = request.POST["email"]
+                gender = request.POST["gender"]
+                # publication = request.POST["publication"]
+                licence_number = request.POST["licence_number"]
+
+                try:
+                    user = CustomUser.objects.get(email=email)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+                except CustomUser.DoesNotExist:
+                    temp_password = uuid.uuid4().hex[:6].upper()
+                    user = CustomUser.objects.create_user(email, temp_password)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+                    try:
+                        send_mail(
+                            "Telemedecine User Creation",
+                            "Hi "
+                            + user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Please change it and create your own",
+                            " telemedecine@gmail.com",
+                            [email],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
+
+                try:
+                    existing_role = Role.objects.get(user=user)
+                    messages.error(
+                        request,
+                        "The Email entered already has a role in the system, Kindly check the system users page.",
+                    )
+                    form = AddLabForm()
+                    return redirect(
+                        "administration:lab",
+                    )
+                except Role.DoesNotExist:
+                    pass
+
+                try:
+                    role = Role.objects.get(
+                        user=user,
+                        institution=institution,
+                        role=Role.LAB_SPECIALIST,
+                    )
+                except Role.DoesNotExist:
+                    role = Role.objects.create(
+                        user=user,
+                        institution=institution,
+                        role=Role.LAB_SPECIALIST,
+                    )
+                    role.save()
+                lab_specialist = LabSpecialist.objects.create(
+                    institution=institution,
+                    user=user,
+                    first_name=first_name,
+                    last_name=last_name,
+                    country=country,
+                    email=email,
+                    gender=gender,
+                )
+                if licence_number:
+                    lab_specialist.licence_number = licence_number
+                lab_specialist.save()
+                try:
+                    send_mail(
+                        "Telemedecine User Creation",
+                        "Hi "
+                        + user.email
+                        + " Welcome to Telemedecine, please use your credentials to log into the system ",
+                        " telemedecine@gmail.com",
+                        [email],
+                        fail_silently=False,
+                    )
+                    messages.success(
+                        request,
+                        "Lab Specialist created successfully!",
+                    )
+                except BaseException:
+                    pass
+            else:
+                messages.error(
+                    request,
+                    "Lab Specialist not created, Please check each field!",
+                )
+                form = AddLabForm()
+        else:
+            form = AddLabForm()
+            return render(
+                request,
+                "administration/lab.html",
+                context={"form": form, "pharmacists": pharmacists},
+            )
+        form = AddLabForm()
+        return redirect(
+            "administration:lab",
+        )
+
+
+def delete_laboratorist(request, id):
+    lab = LabSpecialist.objects.get(id=id)
+    if lab:
+        lab.delete()
+        messages.success(
+            request,
+            "Lab Specialist deleted successfully",
+        )
+    else:
+        messages.error(
+            request,
+            "Couldn't delete LabSpecialist",
+        )
+    return redirect("administration:lab")
+
+
+class SystemUser(View):
+    def get(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        users = Role.objects.filter(institution=institution)
+
+        context = {"users": users}
+        return render(request, "administration/system_users.html", context)
+
+
+class ReceptionistView(View):
+    def get(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        # print(institution)
+        logging.debug("INSTITUTION :%s" % institution)
+        receptionist = Receptionist.objects.filter(institution=institution)
+        form = AddReceptionistForm()
+        context = {"objects": receptionist, "form": form}
+        return render(
+            request, "administration/receptionist.html", context=context
+        )
+
+    def post(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        if request.method == "POST":
+            form = AddReceptionistForm(data=request.POST)
+            if form.is_valid():
+                first_name = request.POST["first_name"]
+                last_name = request.POST["last_name"]
+                country = request.POST["country"]
+                email = request.POST["email"]
+                gender = request.POST["gender"]
+                # publication = request.POST["publication"]
+                # licence_number = request.POST["licence_number"]
+
+                try:
+                    user = CustomUser.objects.get(email=email)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+                except CustomUser.DoesNotExist:
+                    temp_password = uuid.uuid4().hex[:6].upper()
+                    user = CustomUser.objects.create_user(email, temp_password)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+                    try:
+                        send_mail(
+                            "Telemedecine User Creation",
+                            "Hi "
+                            + user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Please change it and create your own",
+                            " telemedecine@gmail.com",
+                            [email],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
+
+                try:
+                    existing_role = Role.objects.get(user=user)
+                    messages.error(
+                        request,
+                        "The Email entered already has a role in the system, Kindly check the system users page.",
+                    )
+                    form = AddLabForm()
+                    return redirect(
+                        "administration:receptionist",
+                    )
+                except Role.DoesNotExist:
+                    pass
+
+                try:
+                    role = Role.objects.get(
+                        user=user,
+                        institution=institution,
+                        role=Role.RECEPTIONIST,
+                    )
+                except Role.DoesNotExist:
+                    role = Role.objects.create(
+                        user=user,
+                        institution=institution,
+                        role=Role.RECEPTIONIST,
+                    )
+                    role.save()
+                receptionist = Receptionist.objects.create(
+                    institution=institution,
+                    user=user,
+                    first_name=first_name,
+                    last_name=last_name,
+                    country=country,
+                    email=email,
+                    gender=gender,
+                )
+                receptionist.save()
+                try:
+                    send_mail(
+                        "Telemedecine User Creation",
+                        "Hi "
+                        + user.email
+                        + " Welcome to Telemedecine, please use your credentials to log into the system ",
+                        " telemedecine@gmail.com",
+                        [email],
+                        fail_silently=False,
+                    )
+                    messages.success(
+                        request,
+                        "Lab Specialist created successfully!",
+                    )
+                except BaseException:
+                    pass
+            else:
+                messages.error(
+                    request,
+                    "Lab Specialist not created, Please check each field!",
+                )
+                form = AddLabForm()
+        else:
+            form = AddReceptionistForm()
+            return render(
+                request,
+                "administration/receptionist.html",
+                context={"form": form, "objects": receptionist},
+            )
+        form = AddReceptionistForm()
+        return redirect(
+            "administration:receptionist",
+        )
+
+
+def delete_receptionist(request, id):
+    receptionist = Receptionist.objects.get(id=id)
+    if receptionist:
+        receptionist.delete()
+        messages.success(
+            request,
+            "Receptionist deleted successfully",
+        )
+    else:
+        messages.error(
+            request,
+            "Couldn't delete Receptionist",
+        )
+    return redirect("administration:receptionist")
+
+
+class NurseView(View):
+    def get(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        # print(institution)
+        logging.debug("INSTITUTION :%s" % institution)
+        nurses = Nurse.objects.filter(institution=institution)
+        form = AddNurseForm()
+        context = {"objects": nurses, "form": form}
+        return render(request, "administration/nurse.html", context=context)
+
+    def post(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        if request.method == "POST":
+            form = AddReceptionistForm(data=request.POST)
+            if form.is_valid():
+                first_name = request.POST["first_name"]
+                last_name = request.POST["last_name"]
+                country = request.POST["country"]
+                email = request.POST["email"]
+                gender = request.POST["gender"]
+                is_practitioner = request.POST["is_practitioner"]
+                # publication = request.POST["publication"]
+                # licence_number = request.POST["licence_number"]
+
+                try:
+                    user = CustomUser.objects.get(email=email)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+                except CustomUser.DoesNotExist:
+                    temp_password = uuid.uuid4().hex[:6].upper()
+                    user = CustomUser.objects.create_user(email, temp_password)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+                    try:
+                        send_mail(
+                            "Telemedecine User Creation",
+                            "Hi "
+                            + user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Please change it and create your own",
+                            " telemedecine@gmail.com",
+                            [email],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
+
+                try:
+                    existing_role = Role.objects.get(user=user)
+                    messages.error(
+                        request,
+                        "The Email entered already has a role in the system, Kindly check the system users page.",
+                    )
+                    form = AddLabForm()
+                    return redirect(
+                        "administration:nurse",
+                    )
+                except Role.DoesNotExist:
+                    pass
+
+                try:
+                    role = Role.objects.get(
+                        user=user,
+                        institution=institution,
+                        role=Role.NURSE,
+                    )
+                except Role.DoesNotExist:
+                    role = Role.objects.create(
+                        user=user,
+                        institution=institution,
+                        role=Role.NURSE,
+                    )
+                    role.save()
+                nurse = Nurse.objects.create(
+                    institution=institution,
+                    user=user,
+                    first_name=first_name,
+                    last_name=last_name,
+                    country=country,
+                    email=email,
+                    gender=gender,
+                )
+                if is_practitioner:
+                    nurse.is_practitioner = True
+                nurse.save()
+                try:
+                    send_mail(
+                        "Telemedecine User Creation",
+                        "Hi "
+                        + user.email
+                        + " Welcome to Telemedecine, please use your credentials to log into the system ",
+                        " telemedecine@gmail.com",
+                        [email],
+                        fail_silently=False,
+                    )
+                    messages.success(
+                        request,
+                        "Nurse created successfully!",
+                    )
+                except BaseException:
+                    pass
+            else:
+                messages.error(
+                    request,
+                    "Nurse not created, Please check each field!",
+                )
+                form = AddNurseForm()
+        else:
+            form = AddNurseForm()
+            return render(
+                request,
+                "administration/nurse.html",
+                context={"form": form, "objects": nurses},
+            )
+        form = AddReceptionistForm()
+        return redirect(
+            "administration:nurse",
+        )
+
+
+def delete_nurse(request, id):
+    nurse = Nurse.objects.get(id=id)
+    if nurse:
+        nurse.delete()
+        messages.success(
+            request,
+            "nurse deleted successfully",
+        )
+    else:
+        messages.error(
+            request,
+            "Couldn't delete nurse",
+        )
+    return redirect("administration:nurse")
