@@ -1,8 +1,17 @@
 import logging
+import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from telemedecine.apps.core.models.hospital_models import *
+from telemedecine.apps.core.models.hospital_models import (
+    Institution,
+    Pharmacist,
+    Doctor,
+    LabSpecialist,
+    Patient,
+    Nurse,
+    Receptionist,
+)
 from telemedecine.apps.core.models.administration import Role
 from .forms import (
     AddProviderForm,
@@ -12,6 +21,7 @@ from .forms import (
     AddLabForm,
     AddReceptionistForm,
     AddNurseForm,
+    AddPatientForm,
 )
 from telemedecine.apps.authentication.models import (
     CustomUser,
@@ -223,6 +233,7 @@ class DoctorView(View):
                 country = request.POST["country"]
                 email = request.POST["email"]
                 gender = request.POST["gender"]
+                speciality = request.POST["speciality"]
                 publication = request.POST["publication"]
                 licence_number = request.POST["licence_number"]
 
@@ -277,6 +288,7 @@ class DoctorView(View):
                 doctor = Doctor.objects.create(
                     institution=institution,
                     user=user,
+                    speciality=speciality,
                     first_name=first_name,
                     last_name=last_name,
                     country=country,
@@ -735,14 +747,14 @@ class ReceptionistView(View):
                     )
                     messages.success(
                         request,
-                        "Lab Specialist created successfully!",
+                        "Receptionist created successfully!",
                     )
                 except BaseException:
                     pass
             else:
                 messages.error(
                     request,
-                    "Lab Specialist not created, Please check each field!",
+                    "Receptionist not created, Please check each field!",
                 )
                 form = AddLabForm()
         else:
@@ -915,3 +927,144 @@ def delete_nurse(request, id):
             "Couldn't delete nurse",
         )
     return redirect("administration:nurse")
+
+
+#### NEVER EVER DELETE A PATIENT RECORD
+class PatientView(View):
+    def get(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        # print(institution)
+        logging.debug("INSTITUTION :%s" % institution)
+        patients = Patient.objects.filter(institution=institution)
+        form = AddPatientForm()
+        context = {"objects": patients, "form": form}
+        return render(request, "administration/patients.html", context=context)
+
+    def post(self, request):
+        institution = get_institution(
+            self.request.user.user_role.institution_id
+        )
+        user = None
+        if request.method == "POST":
+            form = AddPatientForm(data=request.POST)
+            if form.is_valid():
+                first_name = request.POST["first_name"]
+                last_name = request.POST["last_name"]
+                # country = request.POST["country"]
+                email = request.POST["email"]
+                gender = request.POST["gender"]
+                address = request.POST["address"]
+                phone_number = request.POST["phone_number"]
+                age = request.POST["age"]
+                # publication = request.POST["publication"]
+                # licence_number = request.POST["licence_number"]
+                if email:
+                    try:
+                        user = CustomUser.objects.get(email=email)
+                        user.first_name = first_name
+                        user.last_name = last_name
+                        user.save()
+                    except CustomUser.DoesNotExist:
+                        temp_password = uuid.uuid4().hex[:6].upper()
+                        user = CustomUser.objects.create_user(
+                            email, temp_password
+                        )
+                        user.first_name = first_name
+                        user.last_name = last_name
+                        user.save()
+
+                    try:
+                        send_mail(
+                            "Telemedecine Patient Creation",
+                            "Hi dear"
+                            + user.email
+                            + " Your Generated Password is "
+                            + temp_password
+                            + " Use it to login to our platform",
+                            " telemedecine@gmail.com",
+                            [email],
+                            fail_silently=False,
+                        )
+                    except BaseException:
+                        pass
+
+                    try:
+                        existing_role = Role.objects.get(user=user)
+                        messages.error(
+                            request,
+                            "The Email entered already has a role in the system, Kindly check the system users page.",
+                        )
+                        form = AddPatientForm()
+                        return redirect(
+                            "administration:patient",
+                        )
+                    except Role.DoesNotExist:
+                        pass
+
+                    try:
+                        role = Role.objects.get(
+                            user=user,
+                            institution=institution,
+                            role=Role.PATIENT,
+                        )
+                    except Role.DoesNotExist:
+                        role = Role.objects.create(
+                            user=user,
+                            institution=institution,
+                            role=Role.PATIENT,
+                        )
+                        role.save()
+                patient_code = "PA-" + uuid.uuid4().hex[:6].upper()
+                patient = Patient.objects.create(
+                    institution=institution,
+                    # user=user,
+                    patient_code=patient_code,
+                    first_name=first_name,
+                    last_name=last_name,
+                    age=age,
+                    country=institution.country,
+                    email=email,
+                    gender=gender,
+                    address=address,
+                    phone_number=phone_number,
+                )
+                if user:
+                    patient.user = user
+                patient.save()
+                messages.success(
+                    request,
+                    "Patient created successfully",
+                )
+            else:
+                messages.error(
+                    request,
+                    "Patient not created, Please check each field!",
+                )
+                form = AddPatientForm()
+        else:
+            form = AddPatientForm()
+            return render(
+                request,
+                "administration/patient.html",
+                context={"form": form, "objects": patients},
+            )
+        form = AddPatientForm()
+        return redirect(
+            "administration:patient",
+        )
+
+
+# class UpdatePatient(LoginRequiredMixin, UpdateView):
+
+#     model = Patient
+#     template_name = "administration/edit_patient.html"
+#     form_class = UpdatePatientForm
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         con = self.object.pk
+#         context["pk"] = con
+#         context["patient"] = Patient.objects.get(id=con)
+#         return context

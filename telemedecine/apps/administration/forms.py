@@ -1,9 +1,25 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-from telemedecine.apps.core.models.hospital_models import Institution, Doctor
+from telemedecine.apps.core.models.hospital_models import (
+    Institution,
+    Doctor,
+    Speciality,
+)
 
 GENDER = (("M", "Male"), ("F", "Female"))
+
+
+# def get_doctor_speciality():
+#     categories = []
+#     s = Speciality.objects.all().values()
+#     for sp in s:
+#         special = sp["speciality"]
+#         categories.append(special)
+#     return categories
+
+
+# DOCTOR_SPECIALITY = get_doctor_speciality()
 
 
 class AddProviderForm(forms.Form):
@@ -119,7 +135,7 @@ class AddDoctorForm(forms.Form):
         widget=forms.Select(
             attrs={
                 "class": "form-control",
-                "placeholder": "Type",
+                "placeholder": "Gender",
             }
         ),
     )
@@ -145,6 +161,17 @@ class AddDoctorForm(forms.Form):
         label="licence_number",
         required=False,
     )
+    # speciality = forms.ChoiceField(
+    #     choices=[
+    #         (choice.speciality, choice) for choice in Speciality.objects.all()
+    #     ],
+    #     widget=forms.Select(
+    #         attrs={
+    #             "class": "form-control",
+    #             "placeholder": "Category",
+    #         }
+    #     ),
+    # )
 
     # class Meta:
     #     model = Doctor
@@ -379,3 +406,84 @@ class AddNurseForm(forms.Form):
         ),
     )
     is_practitioner = forms.BooleanField()
+
+
+class AddPatientForm(forms.Form):
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "first_name",
+            }
+        ),
+        label="First Name",
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "last_name",
+            }
+        ),
+        label="Last Name",
+    )
+    # country = CountryField().formfield(
+    #     widget=CountrySelectWidget(
+    #         attrs={"class": "form-control"},
+    #     ),
+    #     required=False,
+    # )
+    email = forms.EmailField(
+        label="",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter patient's email",
+                "type": "email",
+                "name": "email",
+            }
+        ),
+        required=False,
+    )
+    age = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "Age",
+            }
+        ),
+        label="Phone Number",
+    )
+
+    gender = forms.ChoiceField(
+        choices=GENDER,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Gender",
+            }
+        ),
+    )
+    phone_number = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "phone_number",
+            }
+        ),
+        label="Phone Number",
+    )
+    address = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "name": "address",
+            }
+        ),
+        label="Address",
+    )

@@ -80,4 +80,10 @@ urlpatterns = [
         admin_views.delete_nurse,
         name="delete_nurse",
     ),
+    ######## PATIENTS
+    path(
+        "patient/",
+        admin_views.PatientView.as_view(),
+        name="patient",
+    ),
 ]

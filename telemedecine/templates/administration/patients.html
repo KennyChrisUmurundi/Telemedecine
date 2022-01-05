@@ -5,8 +5,8 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Doctors</h1>
-                    <p class="mb-4">Bellow is a list of all {{ request.user.user_role.institution}} doctors</p>
+                    <h1 class="h3 mb-2 text-gray-800">Patients</h1>
+                    <p class="mb-4">Bellow is a list of all {{ request.user.user_role.institution}} pharmacists</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -15,7 +15,7 @@
                                 <span class="icon text-white-50">
                                     <i class="fas fa-user-plus"></i>
                                 </span>
-                                <span class="text">Add A Doctor</span>
+                                <span class="text">Create A Patient</span>
                             </a>
                         </div>
                         <!-- Modal -->
@@ -23,7 +23,7 @@
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                       <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Add Doctor</h5>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Add Patient</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
@@ -31,33 +31,33 @@
                                       <div class="modal-body">       
                                         <form method="POST">
                                             {% csrf_token %}
-                                            <div class="mb-3"><label>Doctor's First Name <b style="color: red;">*</b></label>
+                                            <div class="mb-3"><label>Patient's First Name <b style="color: red;">*</b></label>
                                                 {{form.first_name}}
                                             </div>
-                                            <div class="mb-3"><label>Doctor's Last Name <b style="color: red;">*</b></label>
+                                            <div class="mb-3"><label>Patient's Last Name <b style="color: red;">*</b></label>
                                                 {{form.last_name}}
                                             </div>
-                                            <div class="mb-3"><label f>Country<b style="color: red;">*</b></label>
+                                            <!-- <div class="mb-3"><label f>Country<i> (not required)</i></label>
                                                {{form.country}}
-                                            </div>
-                                            <div class="mb-3"><label >Email<b style="color: red;">*</b></label>
+                                            </div> -->
+                                            <div class="mb-3"><label >Email <i>(not required)</i></label>
                                                 {{form.email}}
                                             </div>
                                             <div class="mb-3"><label >Gender<b style="color: red;">*</b></label>
                                                 {{form.gender}}
                                             </div>
-                                            <div class="mb-3"><label >Category<b style="color: red;">*</b></label>
-                                                {{form.speciality}}
+                                            <div class="mb-3"><label >Age<b style="color: red;">*</b></label>
+                                                {{form.age}}
                                             </div>
-                                            <div class="mb-3"><label >Publication</label>
-                                                {{form.publication}}
+                                            <div class="mb-3"><label>Phone Number<b style="color: red;">*</b></label>
+                                                {{form.phone_number}}
                                             </div>
-                                            <div class="mb-3"><label>License Number</label>
-                                                {{form.licence_number}}
+                                            <div class="mb-3"><label>Address<b style="color: red;">*</b></label>
+                                                {{form.address}}
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type= "submit" class="btn btn-primary">Add Doctor</button>
+                                                <button type= "submit" class="btn btn-primary">Add Patient</button>
                                             </div>
                                         </form>
 
@@ -78,14 +78,16 @@
 
                                     <thead>
                                         <tr>
+                                            <th>Patient Code</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
+                                            <th>Age</th>
                                             <th>Country</th>
                                             <th>Email</th>
                                             <th>Gender</th>
-                                            <th>Speciality</th>
-                                            <th>licence_number</th>
-                                            <th>Connected User</th>
+                                            <th>phone_number</th>
+                                            <th>address</th>
+                                            <!-- <th>Connected User</th> -->
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -101,34 +103,32 @@
                                         </tr>
                                     </tfoot> -->
                                     <tbody>
-                                    	{% for doctor in doctors %}
+                                    	{% for pharmacist in objects %}
                                         <tr>
-                                            <td>{{ doctor.first_name}}</td>
-                                            <td>{{doctor.last_name}} </td>
-                                            <td>{{doctor.country.name}} <img src={{doctor.country.flag}}/></td>
-                                            <td>{{doctor.email}}</td>
-                                            <td>{{doctor.gender}}</td>
-                                            <td>{{doctor.speciality}}</td>
-
-                                            {% if doctor.licence_number %}
-                                            <td>{{doctor.licence_number}}</td>
+                                            <td>{{ pharmacist.patient_code}}</td>
+                                            <td>{{ pharmacist.first_name}}</td>
+                                            <td>{{pharmacist.last_name}} </td>
+                                            <td>{{pharmacist.age}} </td>
+                                            <td>{{pharmacist.country.name}} <img src={{pharmacist.country.flag}}/></td>
+                                            {% if pharmacist.email %}
+                                            <td>{{pharmacist.email}}</td>
                                             {% else %}
-                                            <td><span class="badge badge-warning"> Not set</span></td>
+                                            <td><span class="badge badge-secondary"> None</span></td>
                                             {% endif %}
+                                            <td>{{pharmacist.gender}}</td>
+                                            <td>{{pharmacist.phone_number}}</td>
+                                            <td>{{pharmacist.address}}</td>
 
-                                            {% if doctor.user.email %}
-                                            <td>{{doctor.user.email}}</td>
-                                            {% else %}
-                                            <a href="#" class="btn-sm" data-toggle="modal" data-target="#deleteModal">
-                                                <h5><span class="badge badge-info"> <i class="fas fa-user-plus"></i> Assign user</span></h5>
-                                            </a>
-                                            {% endif %}
-                                            
+
                                             <td>
                                                 <div class="row">
     			                                    <a href="" class="btn-sm" data-toggle="modal" data-target="#deleteModal">
-    			                                        <h5><span class="badge badge-danger"> <i class="fas fa-trash"></i> Delete</span></h5>
+    			                                        <h5><span class="badge badge-primary"> <i class="fas fa-user-plus"></i></span></h5>
     			                                    </a>
+
+                                                    <a href="" class="btn-sm" data-toggle="modal" data-target="#deleteModal">
+                                                        <h5><span class="badge badge-info"> <i class="fas fa-edit"></i></span></h5>
+                                                    </a>
                                                     <!-- <a class="ml-1 btn-sm" href="#">
                                                         <h5><span class="badge badge-info"> <i class="fas fa-feather"></i> Edit</span></h5>
                                                     </a> -->
@@ -139,15 +139,15 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Delete Doctor?</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Delete Pharmacist?</h5>
                                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">×</span>
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body">Select "Delete" below if you are ready to delete the doctor, action is not reversible</div>
+                                                            <div class="modal-body">Select "Delete" below if you are ready to delete the pharmacist, action is not reversible</div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                                                <a class="btn btn-danger" href="{% url 'administration:delete_doctor' doctor.id %}">Delete</a>
+                                                                <a class="btn btn-danger" href="{% url 'administration:delete_pharmacist' pharmacist.id %}">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -156,7 +156,7 @@
 											</td>
                                         </tr>
                                         {% endfor %}
-                                        {% if not doctors%}
+                                        {% if not objects%}
                                         <tr >
                                             <td colspan="6">No Data Available</td>
                                         </tr>
