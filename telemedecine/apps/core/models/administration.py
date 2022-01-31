@@ -46,3 +46,6 @@ class PaymentOption(models.Model):
 
     def __str__(self):
         return self.payment_code
+
+    def get_default(self):
+        return self.first()

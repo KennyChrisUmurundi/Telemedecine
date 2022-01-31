@@ -85,9 +85,7 @@ LOGGING = {
             "style": "{",
         },
     },
-    "filters": {
-        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
-    },
+    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
     "handlers": {
         "console": {
             "level": "DEBUG",

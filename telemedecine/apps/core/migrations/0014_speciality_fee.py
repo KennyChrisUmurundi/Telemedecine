@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0013_delete_patientmedicalhistory'),
+        ("core", "0013_delete_patientmedicalhistory"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='speciality',
-            name='fee',
-            field=models.DecimalField(decimal_places=2, default='0.0', max_digits=8, null=True),
+            model_name="speciality",
+            name="fee",
+            field=models.DecimalField(
+                decimal_places=2, default="0.0", max_digits=8, null=True
+            ),
         ),
     ]

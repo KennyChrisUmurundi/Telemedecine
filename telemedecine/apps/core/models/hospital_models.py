@@ -168,7 +168,9 @@ class Appointment(models.Model):
         (FOLLOW_UP, _("Follow Up")),
         (DONE, _("Done")),
     )
-    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
+    institution = models.ForeignKey(
+        Institution, on_delete=models.DO_NOTHING, null=True
+    )
     appointment_date = models.DateTimeField(null=True)
     appointment_code = models.CharField(max_length=30, null=True)
     department = models.ForeignKey(
@@ -182,7 +184,7 @@ class Appointment(models.Model):
         choices=STATUS, max_length=1, default=PENDING, null=True
     )
     payment_option = models.ForeignKey(
-        "core.PaymentOption", on_delete=models.DO_NOTHING
+        "core.PaymentOption", on_delete=models.DO_NOTHING, null=True
     )
     is_paid = models.BooleanField(default=False)
 
@@ -190,18 +192,20 @@ class Appointment(models.Model):
         return self.appointment_code + "" + self.patient.first_name
 
 
-
 class AvailableTest(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     test_name = models.CharField(max_length=200)
     test_code = models.CharField(max_length=200)
-    test_fee = models.DecimalField(decimal_places=)
+    test_fee = models.DecimalField(decimal_places=2, max_digits=8)
+
+    def __str__(self):
+        return self.test_code
 
 
 class LabTest(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     date_taken = models.DateTimeField()
-    test_name = models.ForeignKey(AvailableTest,on_delete=models.DO_NOTHING)
+    test_name = models.ForeignKey(AvailableTest, on_delete=models.DO_NOTHING)
     patient = models.ForeignKey("core.Patient", on_delete=models.DO_NOTHING)
     payment_option = models.ForeignKey(
         "core.PaymentOption", on_delete=models.DO_NOTHING

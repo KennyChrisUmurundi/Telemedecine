@@ -6,40 +6,40 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
-        ('authentication', '0001_initial'),
+        ("auth", "0012_alter_user_first_name_max_length"),
+        ("authentication", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='customuser',
+            name="customuser",
             options={},
         ),
         migrations.RemoveField(
-            model_name='customuser',
-            name='date_joined',
+            model_name="customuser",
+            name="date_joined",
         ),
         migrations.RemoveField(
-            model_name='customuser',
-            name='first_name',
+            model_name="customuser",
+            name="first_name",
         ),
         migrations.RemoveField(
-            model_name='customuser',
-            name='last_name',
+            model_name="customuser",
+            name="last_name",
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='groups',
-            field=models.ManyToManyField(related_name='users', to='auth.Group'),
+            model_name="customuser",
+            name="groups",
+            field=models.ManyToManyField(related_name="users", to="auth.Group"),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='is_active',
+            model_name="customuser",
+            name="is_active",
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='is_staff',
+            model_name="customuser",
+            name="is_staff",
             field=models.BooleanField(default=False),
         ),
     ]

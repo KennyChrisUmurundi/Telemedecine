@@ -9,87 +9,204 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Institution',
+            name="Institution",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('institution_name', models.CharField(max_length=200)),
-                ('country', django_countries.fields.CountryField(max_length=2)),
-                ('state', models.CharField(max_length=200)),
-                ('city', models.CharField(max_length=200)),
-                ('phone_number', models.CharField(max_length=200)),
-                ('specialization', models.CharField(blank=True, max_length=200, null=True)),
-                ('licence', models.FileField(upload_to='media/licenses')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("institution_name", models.CharField(max_length=200)),
+                ("country", django_countries.fields.CountryField(max_length=2)),
+                ("state", models.CharField(max_length=200)),
+                ("city", models.CharField(max_length=200)),
+                ("phone_number", models.CharField(max_length=200)),
+                (
+                    "specialization",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("licence", models.FileField(upload_to="media/licenses")),
             ],
         ),
         migrations.CreateModel(
-            name='Speciality',
+            name="Speciality",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('speciality', models.CharField(max_length=200)),
-                ('description', models.CharField(blank=True, max_length=300, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("speciality", models.CharField(max_length=200)),
+                (
+                    "description",
+                    models.CharField(blank=True, max_length=300, null=True),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Pharmacist',
+            name="Pharmacist",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=200)),
-                ('last_name', models.CharField(max_length=200)),
-                ('country', django_countries.fields.CountryField(max_length=2)),
-                ('email', models.CharField(blank=True, max_length=200, null=True)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('publication', models.JSONField(blank=True, null=True)),
-                ('licence_number', models.CharField(blank=True, max_length=200, null=True)),
-                ('institution', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='core.institution')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=200)),
+                ("last_name", models.CharField(max_length=200)),
+                ("country", django_countries.fields.CountryField(max_length=2)),
+                ("email", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
+                    ),
+                ),
+                ("publication", models.JSONField(blank=True, null=True)),
+                (
+                    "licence_number",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "institution",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="core.institution",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Nurse',
+            name="Nurse",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=200)),
-                ('last_name', models.CharField(max_length=200)),
-                ('country', django_countries.fields.CountryField(max_length=2)),
-                ('email', models.CharField(blank=True, max_length=200, null=True)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('publication', models.JSONField(blank=True, null=True)),
-                ('licence_number', models.CharField(blank=True, max_length=200, null=True)),
-                ('is_practitioner', models.BooleanField(default=False)),
-                ('institution', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='core.institution')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=200)),
+                ("last_name", models.CharField(max_length=200)),
+                ("country", django_countries.fields.CountryField(max_length=2)),
+                ("email", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
+                    ),
+                ),
+                ("publication", models.JSONField(blank=True, null=True)),
+                (
+                    "licence_number",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("is_practitioner", models.BooleanField(default=False)),
+                (
+                    "institution",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="core.institution",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='LabSpecialist',
+            name="LabSpecialist",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=200)),
-                ('last_name', models.CharField(max_length=200)),
-                ('country', django_countries.fields.CountryField(max_length=2)),
-                ('email', models.CharField(max_length=200)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('publication', models.JSONField(blank=True, null=True)),
-                ('licence_number', models.CharField(blank=True, max_length=200, null=True)),
-                ('institution', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='core.institution')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=200)),
+                ("last_name", models.CharField(max_length=200)),
+                ("country", django_countries.fields.CountryField(max_length=2)),
+                ("email", models.CharField(max_length=200)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
+                    ),
+                ),
+                ("publication", models.JSONField(blank=True, null=True)),
+                (
+                    "licence_number",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "institution",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="core.institution",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Doctor',
+            name="Doctor",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=200)),
-                ('last_name', models.CharField(max_length=200)),
-                ('country', django_countries.fields.CountryField(max_length=2)),
-                ('email', models.CharField(max_length=200)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('publication', models.JSONField(blank=True, null=True)),
-                ('licence_number', models.CharField(blank=True, max_length=200, null=True)),
-                ('institution', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='core.institution')),
-                ('speciality', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='core.speciality')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=200)),
+                ("last_name", models.CharField(max_length=200)),
+                ("country", django_countries.fields.CountryField(max_length=2)),
+                ("email", models.CharField(max_length=200)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
+                    ),
+                ),
+                ("publication", models.JSONField(blank=True, null=True)),
+                (
+                    "licence_number",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "institution",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="core.institution",
+                    ),
+                ),
+                (
+                    "speciality",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="core.speciality",
+                    ),
+                ),
             ],
         ),
     ]

@@ -39,9 +39,7 @@ def login(request):
                 )
                 form = AuthenticationForm()
         else:
-            messages.error(
-                request, "Please enter a valid email and a valid password"
-            )
+            messages.error(request, "Please enter a valid email and a valid password")
             form = AuthenticationForm()
     else:
         form = AuthenticationForm()

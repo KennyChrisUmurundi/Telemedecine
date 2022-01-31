@@ -6,18 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0005_alter_role_user'),
+        ("core", "0005_alter_role_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='institution',
-            name='is_active',
+            model_name="institution",
+            name="is_active",
             field=models.BooleanField(default=True, null=True),
         ),
         migrations.AlterField(
-            model_name='role',
-            name='role',
-            field=models.CharField(choices=[('A', 'Admin'), ('D', 'Doctor'), ('P', 'Pharmacist'), ('N', 'Nurse'), ('R', 'Receptionist'), ('C', 'Patient')], default='Z', max_length=1),
+            model_name="role",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("A", "Admin"),
+                    ("D", "Doctor"),
+                    ("P", "Pharmacist"),
+                    ("N", "Nurse"),
+                    ("R", "Receptionist"),
+                    ("C", "Patient"),
+                ],
+                default="Z",
+                max_length=1,
+            ),
         ),
     ]

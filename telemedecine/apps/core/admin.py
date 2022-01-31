@@ -10,5 +10,7 @@ admin.site.register(Nurse)
 admin.site.register(Pharmacist)
 admin.site.register(LabSpecialist)
 admin.site.register(Role)
+admin.site.register(PaymentOption)
+admin.site.register(Appointment)
 
 admin.site.site_header = "Telemedecine Administration"

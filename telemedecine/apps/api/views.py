@@ -54,9 +54,7 @@ class ProviderRegistrationAPIView(APIView):
             pass
         temp_password = uuid.uuid4().hex[:6].upper()
         try:
-            admin_user = CustomUser.objects.create_user(
-                admin_mail, temp_password
-            )
+            admin_user = CustomUser.objects.create_user(admin_mail, temp_password)
             admin_user.save()
         except BaseException:
             admin_user = CustomUser.objects.get(email=admin_mail)

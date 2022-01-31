@@ -9,13 +9,17 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0004_institution_default_admin'),
+        ("core", "0004_institution_default_admin"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='role',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING, related_name='user_role', to=settings.AUTH_USER_MODEL),
+            model_name="role",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="user_role",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

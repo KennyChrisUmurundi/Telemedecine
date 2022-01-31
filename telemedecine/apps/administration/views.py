@@ -38,6 +38,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
+from telemedecine.apps.administration.utils import get_institution
+
 logging.getLogger(__name__)
 
 
@@ -52,15 +54,6 @@ def is_telemedecine_super_admin(user):
 def load_providers():
     providers = Institution.objects.all()
     return providers
-
-
-def get_institution(user):
-    try:
-        resp = Institution.objects.get(id=user)
-    except Institution.DoesNotExist as err:
-        logging.debug("INSTITUTION NOT FOUND:%s" % err)
-        resp = None
-    return resp
 
 
 @login_required

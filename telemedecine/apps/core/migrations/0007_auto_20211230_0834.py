@@ -9,34 +9,52 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0006_auto_20211211_2031'),
+        ("core", "0006_auto_20211211_2031"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='labspecialist',
-            name='publication',
+            model_name="labspecialist",
+            name="publication",
         ),
         migrations.RemoveField(
-            model_name='nurse',
-            name='licence_number',
+            model_name="nurse",
+            name="licence_number",
         ),
         migrations.RemoveField(
-            model_name='nurse',
-            name='publication',
+            model_name="nurse",
+            name="publication",
         ),
         migrations.RemoveField(
-            model_name='pharmacist',
-            name='publication',
+            model_name="pharmacist",
+            name="publication",
         ),
         migrations.AlterField(
-            model_name='labspecialist',
-            name='user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='sys_user', to=settings.AUTH_USER_MODEL),
+            model_name="labspecialist",
+            name="user",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="sys_user",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='role',
-            name='role',
-            field=models.CharField(choices=[('A', 'Admin'), ('D', 'Doctor'), ('P', 'Pharmacist'), ('N', 'Nurse'), ('R', 'Receptionist'), ('C', 'Patient'), ('L', 'Lab Specialist')], default='Z', max_length=1),
+            model_name="role",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("A", "Admin"),
+                    ("D", "Doctor"),
+                    ("P", "Pharmacist"),
+                    ("N", "Nurse"),
+                    ("R", "Receptionist"),
+                    ("C", "Patient"),
+                    ("L", "Lab Specialist"),
+                ],
+                default="Z",
+                max_length=1,
+            ),
         ),
     ]
