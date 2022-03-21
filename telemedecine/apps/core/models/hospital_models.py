@@ -192,6 +192,13 @@ class Appointment(models.Model):
         return self.appointment_code + "" + self.patient.first_name
 
 
+"""
+Appointment logic:
+1. Appointment with registered patient
+    receptionsist  
+"""
+
+
 class AvailableTest(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     test_name = models.CharField(max_length=200)

@@ -53,6 +53,12 @@
 
             <hr class="sidebar-divider my-0">
 
+            <li class="nav-item {% active_link 'telehealth:video_call' 'active' %}">
+                <a class="nav-link" href="{% url 'telehealth:video_call' %}" >
+                    <i class="fas fa-fw fa-hospital-user"></i>
+                    <span>Conferencing</span></a>
+            </li>
+
             {% if user.is_staff %}
             <!-- <hr class="sidebar-divider"> -->
             <li class="nav-item {% active_link 'administration:providers' 'active' %}">

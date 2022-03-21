@@ -4,6 +4,11 @@ from . import views as admin_views
 
 app_name = "administration"
 urlpatterns = [
+    path(
+        "test/call",
+        admin_views.TestCall.as_view(),
+        name="test_call",
+    ),
     path("dashboard/", admin_views.dashboard, name="dashboard"),
     path("providers/", admin_views.Providers.as_view(), name="providers"),
     path(

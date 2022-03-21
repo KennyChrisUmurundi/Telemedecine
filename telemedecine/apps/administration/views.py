@@ -1061,3 +1061,7 @@ class PatientView(View):
 #         context["pk"] = con
 #         context["patient"] = Patient.objects.get(id=con)
 #         return context
+
+
+class TestCall(View):
+    pass

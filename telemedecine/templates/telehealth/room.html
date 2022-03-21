@@ -1,0 +1,47 @@
+{% extends 'administration/base.html' %}
+{% load static %}
+{% block content %}
+<link rel='stylesheet' type='text/css' media='screen' href="{% static 'css/telehealth/main.css' %}">
+<script src="{% static 'js/main.js' %}"></script>
+
+<div class="container-fluid">
+<h1 class="h3 mb-2 text-gray-800">Conference</h1>
+<p class="mb-4">Video Conferencing</p>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a type="button" data-toggle="modal" data-target="#editProvider" class="btn btn-success btn-icon-split mr-3">
+            <span class="icon text-white-50">
+                <i class="fas fa-user-plus"></i>
+            </span>
+            <!-- <span class="text">Add A Receptionist</span> -->
+        </a>
+    </div>
+
+
+
+    <section id="video-streams"></section>
+
+    <section id="controls-wrapper">
+        <div class="icon-wrapper">
+            <a class="control-icon"><i class="fas fa-microphone"id="mic-btn"></i></a>
+            <!-- <img class="control-icon" id="mic-btn" src="{% static 'images/microphone.svg' %}" /> -->
+        </div>
+
+        <div class="icon-wrapper">
+            <a class="control-icon"><i class="fas fa-camera"id="leave-btn3"></i></a>
+            <!-- <img class="control-icon" id="camera-btn" src="{% static 'images/video.svg' %}" /> -->
+        </div>
+
+        <div class="icon-wrapper">
+            <a class="control-icon"><i class="fas fa-times-circle"id="leave-btn3"></i></a>
+            <!-- <img class="control-icon" id="leave-btn" src="{% static 'images/leave.svg' %}" /> -->
+        </div>
+    </section>
+</main>
+
+
+<script type="text/javascript" src="{% static 'js/AgoraRTC_N-4.8.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/streams.js' %}" ></script>
+{% endblock content %}
